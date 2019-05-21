@@ -22,8 +22,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -59,8 +59,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
 
         infoView = findViewById(R.id.info_view);
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment);
-        mapFragment.getMapAsync(this);
+        SupportMapFragment fragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+        if (fragment != null) {
+            fragment.getMapAsync(this);
+        }
 
         apiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
