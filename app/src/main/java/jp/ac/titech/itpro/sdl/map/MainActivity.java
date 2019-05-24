@@ -10,6 +10,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient locationClient;
     private LocationRequest request;
     private LocationCallback callback;
+    Button Resetbutton;
 
     private enum State {
         STOPPED,
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
+        Resetbutton = findViewById(R.id.Resetbutton);
 
         infoView = findViewById(R.id.info_view);
         SupportMapFragment fragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
@@ -74,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationClient = LocationServices.getFusedLocationProviderClient(this);
 
         request = new LocationRequest();
-        request.setInterval(10000L);
-        request.setFastestInterval(5000L);
+        //request.setInterval(10000L);
+        //request.setFastestInterval(5000L);
         request.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         callback = new LocationCallback() {
@@ -96,6 +100,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 map.animateCamera(CameraUpdateFactory.newLatLng(ll));
             }
         };
+
+        Resetbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                startLocationUpdate(true);
+            }
+        });
+
     }
 
     @Override
