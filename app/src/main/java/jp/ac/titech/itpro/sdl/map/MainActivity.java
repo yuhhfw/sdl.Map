@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         infoView = findViewById(R.id.info_view);
         SupportMapFragment fragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         if (fragment != null) {
+            Log.d(TAG, "onCreate: getMapAsync");
             fragment.getMapAsync(this);
         }
 
@@ -81,14 +82,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 Log.d(TAG, "onLocationResult");
-                if (locationResult != null) {
-                    Location location = locationResult.getLastLocation();
-                    LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-                    infoView.setText(getString(R.string.latlng_format, ll.latitude, ll.longitude));
-                    if (map != null) {
-                        map.animateCamera(CameraUpdateFactory.newLatLng(ll));
-                    }
+                if (locationResult == null) {
+                    Log.d(TAG, "onLocationResult: locationResult == null");
+                    return;
                 }
+                Location location = locationResult.getLastLocation();
+                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+                infoView.setText(getString(R.string.latlng_format, ll.latitude, ll.longitude));
+                if (map == null) {
+                    Log.d(TAG, "onLocationResult: map == null");
+                    return;
+                }
+                map.animateCamera(CameraUpdateFactory.newLatLng(ll));
             }
         };
     }
